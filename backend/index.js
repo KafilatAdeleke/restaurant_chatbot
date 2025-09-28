@@ -9,11 +9,16 @@ const menu = require('./models/menu');
 const { isValidInput, isValidEmail } = require('./utils/validation');
 const orderService = require('./services/orderService');
 
-// Use mock payment service
+// Use mock payment service in development, real service in production
 const isDevelopment = process.env.NODE_ENV !== 'production';
+console.log('🔍 DEBUG: NODE_ENV =', process.env.NODE_ENV);
+console.log('🔍 DEBUG: isDevelopment =', isDevelopment);
+
 const paymentService = isDevelopment
     ? require('./services/mockPaymentService')
     : require('./services/paymentService');
+
+console.log('🔍 DEBUG: Loaded payment service:', paymentService.constructor.name);
 
 if (isDevelopment) {
     console.log('🚧 Running in DEVELOPMENT mode - using MOCK payment service');
@@ -77,11 +82,17 @@ async function processChatMessage(message, sessionId) {
             }
 
             // Initialize payment
+            console.log('🔍 DEBUG: About to initialize payment with service:', paymentService.constructor.name);
+            console.log('🔍 DEBUG: Environment:', process.env.NODE_ENV);
+            console.log('🔍 DEBUG: Using real Paystack?', process.env.NODE_ENV === 'production');
+
             const paymentResult = await paymentService.initializePayment(
                 { total: total },
                 customerEmail,
                 sessionId
             );
+
+            console.log('🔍 DEBUG: Payment result:', paymentResult);
 
             if (paymentResult.success) {
                 // Store order with payment reference
