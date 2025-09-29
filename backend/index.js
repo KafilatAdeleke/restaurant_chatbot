@@ -102,7 +102,7 @@ async function processChatMessage(message, sessionId) {
                 response = `💳 PAYMENT READY\n\n`;
                 response += `Order ID: ${paymentResult.data.orderId}\n`;
                 response += `Amount: NGN${paymentResult.data.amount}\n\n`;
-                response += `🔗 Payment Link: ${paymentResult.data.authorizationUrl}\n\n`;
+                response += `${paymentResult.data.authorizationUrl}\n\n`;
                 response += `📱 Click the link above to complete your payment securely with Paystack.\n\n`;
                 response += `📧 Receipt will be sent to: ${customerEmail}\n\n`;
                 response += `⚠️ Note: This is a test transaction. Use test card: 4084084084084081`;
